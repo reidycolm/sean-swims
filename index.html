@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarbert Coastal Dashboard</title>
+    <meta name="description" content="Real-time coastal weather and tide dashboard for Tarbert, Co. Kerry">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Icons (feather icons for simplicity and clean look) -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Background Map -->
+    <img src="coast_bg.png" alt="" class="coast-bg">
+
+    <div class="app-container">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="brand">
+                <img src="logo_v2.png" alt="Sean & Radar's Swim Club Logo" class="logo-img">
+            </div>
+            <div class="location-badge">
+                <i data-feather="map-pin"></i>
+                <span>Tarbert, Co. Kerry</span>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <header class="hero">
+            <div class="current-weather">
+                <div class="temp-display">
+                    <span id="current-temp" class="loading">--</span><span class="unit">°C</span>
+                </div>
+                <div class="condition-display">
+                    <i id="weather-icon" data-feather="cloud" class="large-icon"></i>
+                    <span id="weather-desc">Loading...</span>
+                </div>
+                <div class="last-updated">
+                    Updated: <span id="last-updated-time">--:--</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Grid -->
+        <main class="dashboard-grid">
+
+            <!-- Tides Card (1st) -->
+            <div class="card tides-card">
+                <div class="card-header">
+                    <h3><i data-feather="activity"></i> Tides</h3>
+                    <span class="tag">Next 24h</span>
+                </div>
+
+                <div class="tide-summary">
+                    <div class="tide-item">
+                        <span class="label">Next High</span>
+                        <span class="time" id="next-high-tide">Checking...</span>
+                    </div>
+                    <div class="tide-item">
+                        <span class="label">Next Low</span>
+                        <span class="time" id="next-low-tide">Checking...</span>
+                    </div>
+                </div>
+
+                <div class="chart-container-wide">
+                    <canvas id="tideChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Sea Temp Card (2nd) -->
+            <div class="card sea-card">
+                <div class="card-header">
+                    <h3><i data-feather="droplet"></i> Sea Temp</h3>
+                </div>
+                <div class="card-center">
+                    <div class="card-value sea-value">
+                        <span id="sea-temp">--</span> <span class="unit">°C</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <span>Wave Height: </span> <strong id="wave-height">--</strong> m
+                </div>
+            </div>
+
+            <!-- Rainfall Card (3rd) -->
+            <div class="card rainfall-card">
+                <div class="card-header">
+                    <h3><i data-feather="cloud-rain"></i> Rainfall</h3>
+                    <span class="date-display" id="rain-date"></span>
+                </div>
+                <div class="card-value">
+                    <span id="current-rain">--</span> <span class="unit">mm</span>
+                    <span class="subtitle">last hour</span>
+                </div>
+                <div class="chart-container-small">
+                    <canvas id="rainfallChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Forecast Overview (4th) -->
+            <div class="card forecast-card full-width">
+                <div class="card-header">
+                    <h3>Forecast</h3>
+                </div>
+                <div class="forecast-row" id="forecast-container">
+                    <!-- Forecast items injected via JS -->
+                    <div class="loading-bubbles">
+                        <div class="bubble"></div>
+                        <div class="bubble"></div>
+                        <div class="bubble"></div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <footer>
+            <p>Data provided by <a href="https://open-meteo.com/" target="_blank">Open-Meteo</a>. No cookies. No
+                tracking.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        feather.replace();
+    </script>
+</body>
+
+</html>
