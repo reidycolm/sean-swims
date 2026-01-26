@@ -14,6 +14,8 @@ const els = {
     conditionIcon: document.getElementById('weather-icon'),
     conditionDesc: document.getElementById('weather-desc'),
     rain: document.getElementById('current-rain'),
+    rainStatus: document.getElementById('rain-status'),
+    nextRain: document.getElementById('next-hour-rain'),
     seaTemp: document.getElementById('sea-temp'),
     waveHeight: document.getElementById('wave-height'),
     nextHighTide: document.getElementById('next-high-tide'),
@@ -190,12 +192,32 @@ function renderWeather(data) {
     els.conditionIcon.setAttribute('data-feather', icon);
     els.conditionDesc.textContent = getWeatherDesc(code);
 
-    // Rainfall text
-    els.rain.textContent = current.precipitation;
+    // Rainfall Logic
+    const precip = current.precipitation;
+    els.rain.textContent = precip;
 
-    // Rain Chart
+    // 1. Rain Status
+    let statusText = 'Dry';
+    if (precip > 0) statusText = 'Drizzle';
+    if (precip >= 0.5) statusText = 'Light Rain';
+    if (precip >= 2.5) statusText = 'Moderate Rain';
+    if (precip >= 7.6) statusText = 'Heavy Rain';
+
+    if (els.rainStatus) els.rainStatus.textContent = statusText;
+
+    // 2. Next Hour Forecast
     const hourly = data.hourly;
     const nowIndex = getCurrentHourIndex(hourly.time);
+
+    // Safety check for index
+    if (nowIndex !== -1 && nowIndex + 1 < hourly.precipitation.length) {
+        const nextHourPrecip = hourly.precipitation[nowIndex + 1];
+        if (els.nextRain) els.nextRain.textContent = `Next Hour: ${nextHourPrecip} mm`;
+    } else {
+        if (els.nextRain) els.nextRain.textContent = 'Next Hour: --';
+    }
+
+    // Rain Chart
     const sliceStart = Math.max(0, nowIndex - 6);
     const sliceEnd = Math.min(hourly.time.length, nowIndex + 18);
 

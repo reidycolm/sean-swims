@@ -101,9 +101,12 @@
                     <h3><i data-feather="cloud-rain"></i> Rainfall</h3>
                     <span class="date-display" id="rain-date"></span>
                 </div>
-                <div class="card-value">
-                    <span id="current-rain">--</span> <span class="unit">mm</span>
-                    <span class="subtitle">last hour</span>
+                <div class="card-value rainfall-content">
+                    <div class="rain-main">
+                        <span id="current-rain">--</span> <span class="unit">mm</span>
+                    </div>
+                    <div id="rain-status" class="rain-status">--</div>
+                    <div id="next-hour-rain" class="rain-forecast">Next Hour: --</div>
                 </div>
                 <div class="chart-container-small">
                     <canvas id="rainfallChart"></canvas>
