@@ -308,7 +308,7 @@ async function fetchWeather() {
     try {
         const { lat, lon } = LOCATIONS.tarbert;
         // Updated URL to include sunrise/sunset and more days
-        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code,precipitation&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset&hourly=precipitation,temperature_2m&timezone=Europe%2FDublin&past_days=1&forecast_days=5`;
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code,precipitation&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset&hourly=precipitation,temperature_2m&timezone=Europe%2FDublin&past_days=1&forecast_days=7`;
         const res = await fetch(url);
         const data = await res.json();
         renderWeather(data);
