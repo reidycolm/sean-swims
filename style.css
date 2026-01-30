@@ -963,14 +963,16 @@ footer a:hover {
         height: 16px;
     }
 
-    /* Tighter Sea Card */
+    /* Fix Sea Conditions Card - MUST stack vertically on mobile */
     .sea-grid {
+        flex-direction: column;
         gap: 0.5rem;
     }
 
     .sea-metric {
-        padding: 0.85rem 0.5rem;
-        min-width: 120px;
+        padding: 0.85rem;
+        min-width: unset;
+        width: 100%;
     }
 
     .metric-value {
