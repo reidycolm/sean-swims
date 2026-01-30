@@ -21,7 +21,7 @@
     <!-- Icons (feather icons for simplicity and clean look) -->
     <script src="https://unpkg.com/feather-icons"></script>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=4">
 </head>
 
 <body>
@@ -110,30 +110,21 @@
             <!-- Sea Conditions Card -->
             <div class="card sea-card">
                 <div class="card-header">
-                    <h3><i data-feather="droplet"></i> Sea Conditions</h3>
+                    <h3><i data-feather="anchor"></i> Sea Conditions</h3>
+                    <span class="tag">Live</span>
                 </div>
-                <div class="sea-stats">
-                    <div class="sea-stat primary">
-                        <div class="stat-icon">
-                            <i data-feather="thermometer"></i>
+                <div class="sea-grid">
+                    <div class="sea-metric water-temp">
+                        <div class="metric-value">
+                            <span id="sea-temp">--</span><span class="metric-unit">°C</span>
                         </div>
-                        <div class="stat-content">
-                            <span class="stat-label">Water Temp</span>
-                            <div class="stat-value">
-                                <span id="sea-temp">--</span><span class="unit">°C</span>
-                            </div>
-                        </div>
+                        <div class="metric-label">Water Temperature</div>
                     </div>
-                    <div class="sea-stat">
-                        <div class="stat-icon">
-                            <i data-feather="wind"></i>
+                    <div class="sea-metric wave-height">
+                        <div class="metric-value">
+                            <span id="wave-height">--</span><span class="metric-unit">m</span>
                         </div>
-                        <div class="stat-content">
-                            <span class="stat-label">Wave Height</span>
-                            <div class="stat-value">
-                                <span id="wave-height">--</span><span class="unit">m</span>
-                            </div>
-                        </div>
+                        <div class="metric-label">Wave Height</div>
                     </div>
                 </div>
             </div>
@@ -188,7 +179,6 @@
         <footer>
             <p>Weather data by <a href="https://open-meteo.com/" target="_blank">Open-Meteo</a> • Tide times from
                 Tarbert Island Tide Table 2026</p>
-            <p class="footer-note">No cookies. No tracking. Built with 💙 for swimmers.</p>
         </footer>
     </div>
 
