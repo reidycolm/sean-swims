@@ -4,13 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tarbert Coastal Dashboard</title>
-    <meta name="description" content="Real-time coastal weather and tide dashboard for Tarbert, Co. Kerry">
+    <title>Tarbert Coastal Dashboard | Sean & Radar's Swim Club</title>
+    <meta name="description"
+        content="Real-time coastal weather, tides, and sea conditions for Tarbert, Co. Kerry - Sean & Radar's Swim Club">
 
-    <!-- Google Fonts -->
+    <!-- Google Fonts - Premium Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap"
         rel="stylesheet">
 
     <!-- Chart.js -->
@@ -32,9 +34,14 @@
             <div class="brand">
                 <img src="logo_v2.png" alt="Sean & Radar's Swim Club Logo" class="logo-img">
             </div>
-            <div class="location-badge">
-                <i data-feather="map-pin"></i>
-                <span>Tarbert, Co. Kerry</span>
+            <div class="nav-right">
+                <div class="location-badge">
+                    <i data-feather="map-pin"></i>
+                    <span>Tarbert, Co. Kerry</span>
+                </div>
+                <div class="date-badge" id="current-date">
+                    Loading...
+                </div>
             </div>
         </nav>
 
@@ -48,7 +55,18 @@
                     <i id="weather-icon" data-feather="cloud" class="large-icon"></i>
                     <span id="weather-desc">Loading...</span>
                 </div>
+                <div class="sun-cycle">
+                    <div class="sun-item">
+                        <i data-feather="sunrise"></i>
+                        <span id="sunrise-time">--:--</span>
+                    </div>
+                    <div class="sun-item">
+                        <i data-feather="sunset"></i>
+                        <span id="sunset-time">--:--</span>
+                    </div>
+                </div>
                 <div class="last-updated">
+                    <i data-feather="refresh-cw" class="mini-icon"></i>
                     Updated: <span id="last-updated-time">--:--</span>
                 </div>
             </div>
@@ -57,21 +75,30 @@
         <!-- Main Grid -->
         <main class="dashboard-grid">
 
-            <!-- Tides Card (1st) -->
+            <!-- Tides Card -->
             <div class="card tides-card">
                 <div class="card-header">
                     <h3><i data-feather="activity"></i> Tides</h3>
-                    <span class="tag">Next 24h</span>
+                    <div class="header-tags">
+                        <span class="tag source-tag" id="tide-source">Tarbert Island</span>
+                        <span class="tag">Next 24h</span>
+                    </div>
                 </div>
 
                 <div class="tide-summary">
-                    <div class="tide-item">
-                        <span class="label">Next High</span>
-                        <span class="time" id="next-high-tide">Checking...</span>
+                    <div class="tide-item high">
+                        <i data-feather="arrow-up" class="tide-icon"></i>
+                        <div class="tide-info">
+                            <span class="label">Next High</span>
+                            <span class="time" id="next-high-tide">--:--</span>
+                        </div>
                     </div>
-                    <div class="tide-item">
-                        <span class="label">Next Low</span>
-                        <span class="time" id="next-low-tide">Checking...</span>
+                    <div class="tide-item low">
+                        <i data-feather="arrow-down" class="tide-icon"></i>
+                        <div class="tide-info">
+                            <span class="label">Next Low</span>
+                            <span class="time" id="next-low-tide">--:--</span>
+                        </div>
                     </div>
                 </div>
 
@@ -80,22 +107,38 @@
                 </div>
             </div>
 
-            <!-- Sea Temp Card (2nd) -->
+            <!-- Sea Conditions Card -->
             <div class="card sea-card">
                 <div class="card-header">
-                    <h3><i data-feather="droplet"></i> Sea Temp</h3>
+                    <h3><i data-feather="droplet"></i> Sea Conditions</h3>
                 </div>
-                <div class="card-center">
-                    <div class="card-value sea-value">
-                        <span id="sea-temp">--</span> <span class="unit">°C</span>
+                <div class="sea-stats">
+                    <div class="sea-stat primary">
+                        <div class="stat-icon">
+                            <i data-feather="thermometer"></i>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-label">Water Temp</span>
+                            <div class="stat-value">
+                                <span id="sea-temp">--</span><span class="unit">°C</span>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="card-footer">
-                    <span>Wave Height: </span> <strong id="wave-height">--</strong> m
+                    <div class="sea-stat">
+                        <div class="stat-icon">
+                            <i data-feather="wind"></i>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-label">Wave Height</span>
+                            <div class="stat-value">
+                                <span id="wave-height">--</span><span class="unit">m</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Rainfall Card (3rd) -->
+            <!-- Rainfall Card -->
             <div class="card rainfall-card">
                 <div class="card-header">
                     <h3><i data-feather="cloud-rain"></i> Rainfall</h3>
@@ -113,10 +156,10 @@
                 </div>
             </div>
 
-            <!-- Forecast Overview (4th) -->
+            <!-- Forecast Overview -->
             <div class="card forecast-card full-width">
                 <div class="card-header">
-                    <h3>Forecast</h3>
+                    <h3><i data-feather="calendar"></i> Weather Forecast</h3>
                 </div>
                 <div class="forecast-row" id="forecast-container">
                     <!-- Forecast items injected via JS -->
@@ -128,11 +171,24 @@
                 </div>
             </div>
 
+            <!-- Weekly Tides -->
+            <div class="card weekly-tides-card full-width">
+                <div class="card-header">
+                    <h3><i data-feather="calendar"></i> Weekly Tide Schedule</h3>
+                    <span class="tag">Tarbert Island</span>
+                </div>
+                <div class="weekly-tides-container" id="weekly-tides-container">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+
+
         </main>
 
         <footer>
-            <p>Data provided by <a href="https://open-meteo.com/" target="_blank">Open-Meteo</a>. No cookies. No
-                tracking.</p>
+            <p>Weather data by <a href="https://open-meteo.com/" target="_blank">Open-Meteo</a> • Tide times from
+                Tarbert Island Tide Table 2026</p>
+            <p class="footer-note">No cookies. No tracking. Built with 💙 for swimmers.</p>
         </footer>
     </div>
 
@@ -140,6 +196,7 @@
     <script>
         feather.replace();
     </script>
+
 </body>
 
 </html>
