@@ -839,43 +839,72 @@ footer a:hover {
 /* Small Mobile (max-width: 480px) */
 @media (max-width: 480px) {
     body {
-        padding: 0.75rem;
+        padding: 0.5rem;
     }
 
     .navbar {
-        margin-bottom: 1rem;
+        margin-bottom: 0.75rem;
+        gap: 0.5rem;
     }
 
     .logo-img {
-        width: 70px;
-        height: 70px;
+        width: 60px;
+        height: 60px;
     }
 
     .location-badge {
-        font-size: 0.8rem;
-        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
+        padding: 0.35rem 0.7rem;
+    }
+
+    .date-badge {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.6rem;
     }
 
     .temp-display {
-        font-size: 3rem;
-        letter-spacing: -2px;
+        font-size: 2.5rem;
+        letter-spacing: -1px;
+        margin-bottom: 0.25rem;
     }
 
     .temp-display .unit {
-        font-size: 1.5rem;
+        font-size: 1.25rem;
     }
 
     .condition-display {
-        font-size: 1rem;
+        font-size: 0.95rem;
+        gap: 0.5rem;
+        margin-top: 0.25rem;
+    }
+
+    .large-icon {
+        width: 20px;
+        height: 20px;
     }
 
     .hero {
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .sun-cycle {
+        margin-top: 0.75rem;
+        gap: 0.5rem;
     }
 
     .sun-item {
-        padding: 0.4rem 0.75rem;
-        font-size: 0.85rem;
+        padding: 0.35rem 0.6rem;
+        font-size: 0.8rem;
+    }
+
+    .sun-item svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    .last-updated {
+        margin-top: 0.75rem;
+        font-size: 0.75rem;
     }
 
     .forecast-row {
@@ -895,27 +924,43 @@ footer a:hover {
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: flex-start;
-        gap: 0.3rem;
+        gap: 0.35rem;
+    }
+
+    .tide-pill {
+        padding: 0.25rem 0.6rem;
+        font-size: 0.7rem;
+        white-space: nowrap;
     }
 
     .tide-row {
         flex-direction: column;
         align-items: flex-start;
-        gap: 0.5rem;
-        padding: 0.75rem 1rem;
+        gap: 0.4rem;
+        padding: 0.65rem 0.85rem;
     }
 
     .tide-date {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
         min-width: auto;
+        font-weight: 700;
     }
 
     .card {
-        padding: 1rem;
+        padding: 0.85rem;
+    }
+
+    .card-header {
+        margin-bottom: 1rem;
     }
 
     .card-header h3 {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
+    }
+
+    .card-header h3 svg {
+        width: 16px;
+        height: 16px;
     }
 
     /* Tighter Sea Card */
