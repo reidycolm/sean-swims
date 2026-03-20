@@ -193,6 +193,371 @@ const TIDE_TABLE_FEB_2026 = {
     ]
 };
 
+// Tarbert Island Tide Table - March 2026
+const TIDE_TABLE_MAR_2026 = {
+    1: [
+        { time: '04:07', height: 4.60, type: 'High' },
+        { time: '10:24', height: 0.70, type: 'Low' },
+        { time: '16:43', height: 4.70, type: 'High' },
+        { time: '22:39', height: 0.90, type: 'Low' }
+    ],
+    2: [
+        { time: '04:54', height: 4.90, type: 'High' },
+        { time: '11:07', height: 0.40, type: 'Low' },
+        { time: '17:25', height: 4.90, type: 'High' },
+        { time: '23:20', height: 0.60, type: 'Low' }
+    ],
+    3: [
+        { time: '05:35', height: 5.10, type: 'High' },
+        { time: '11:47', height: 0.20, type: 'Low' },
+        { time: '18:02', height: 5.00, type: 'High' },
+        { time: '23:58', height: 0.50, type: 'Low' }
+    ],
+    4: [
+        { time: '06:12', height: 5.20, type: 'High' },
+        { time: '12:23', height: 0.20, type: 'Low' },
+        { time: '18:37', height: 5.10, type: 'High' }
+    ],
+    5: [
+        { time: '00:31', height: 0.50, type: 'Low' },
+        { time: '06:47', height: 5.20, type: 'High' },
+        { time: '12:56', height: 0.30, type: 'Low' },
+        { time: '19:10', height: 5.00, type: 'High' }
+    ],
+    6: [
+        { time: '01:02', height: 0.60, type: 'Low' },
+        { time: '07:20', height: 5.10, type: 'High' },
+        { time: '13:27', height: 0.60, type: 'Low' },
+        { time: '19:41', height: 4.90, type: 'High' }
+    ],
+    7: [
+        { time: '01:32', height: 0.80, type: 'Low' },
+        { time: '07:53', height: 4.90, type: 'High' },
+        { time: '13:56', height: 0.90, type: 'Low' },
+        { time: '20:12', height: 4.80, type: 'High' }
+    ],
+    8: [
+        { time: '02:03', height: 1.00, type: 'Low' },
+        { time: '08:25', height: 4.70, type: 'High' },
+        { time: '14:26', height: 1.20, type: 'Low' },
+        { time: '20:46', height: 4.60, type: 'High' }
+    ],
+    9: [
+        { time: '02:36', height: 1.30, type: 'Low' },
+        { time: '09:00', height: 4.40, type: 'High' },
+        { time: '15:00', height: 1.60, type: 'Low' },
+        { time: '21:23', height: 4.30, type: 'High' }
+    ],
+    10: [
+        { time: '03:13', height: 1.60, type: 'Low' },
+        { time: '09:41', height: 4.10, type: 'High' },
+        { time: '15:41', height: 1.90, type: 'Low' },
+        { time: '22:08', height: 4.00, type: 'High' }
+    ],
+    11: [
+        { time: '04:00', height: 1.90, type: 'Low' },
+        { time: '10:35', height: 3.70, type: 'High' },
+        { time: '16:38', height: 2.20, type: 'Low' },
+        { time: '23:10', height: 3.80, type: 'High' }
+    ],
+    12: [
+        { time: '05:10', height: 2.20, type: 'Low' },
+        { time: '12:02', height: 3.50, type: 'High' },
+        { time: '18:06', height: 2.40, type: 'Low' }
+    ],
+    13: [
+        { time: '00:35', height: 3.60, type: 'High' },
+        { time: '07:00', height: 2.20, type: 'Low' },
+        { time: '13:53', height: 3.60, type: 'High' },
+        { time: '19:57', height: 2.20, type: 'Low' }
+    ],
+    14: [
+        { time: '02:04', height: 3.80, type: 'High' },
+        { time: '08:32', height: 1.90, type: 'Low' },
+        { time: '14:59', height: 3.80, type: 'High' },
+        { time: '20:59', height: 1.90, type: 'Low' }
+    ],
+    15: [
+        { time: '03:05', height: 4.00, type: 'High' },
+        { time: '09:25', height: 1.50, type: 'Low' },
+        { time: '15:46', height: 4.10, type: 'High' },
+        { time: '21:43', height: 1.50, type: 'Low' }
+    ],
+    16: [
+        { time: '03:51', height: 4.30, type: 'High' },
+        { time: '10:07', height: 1.10, type: 'Low' },
+        { time: '16:24', height: 4.40, type: 'High' },
+        { time: '22:21', height: 1.10, type: 'Low' }
+    ],
+    17: [
+        { time: '04:30', height: 4.60, type: 'High' },
+        { time: '10:44', height: 0.70, type: 'Low' },
+        { time: '17:00', height: 4.70, type: 'High' },
+        { time: '22:57', height: 0.80, type: 'Low' }
+    ],
+    18: [
+        { time: '05:06', height: 4.90, type: 'High' },
+        { time: '11:19', height: 0.50, type: 'Low' },
+        { time: '17:34', height: 4.90, type: 'High' },
+        { time: '23:33', height: 0.60, type: 'Low' }
+    ],
+    19: [
+        { time: '05:42', height: 5.10, type: 'High' },
+        { time: '11:54', height: 0.30, type: 'Low' },
+        { time: '18:08', height: 5.10, type: 'High' }
+    ],
+    20: [
+        { time: '00:07', height: 0.40, type: 'Low' },
+        { time: '06:17', height: 5.30, type: 'High' },
+        { time: '12:28', height: 0.20, type: 'Low' },
+        { time: '18:44', height: 5.20, type: 'High' }
+    ],
+    21: [
+        { time: '00:42', height: 0.40, type: 'Low' },
+        { time: '06:54', height: 5.30, type: 'High' },
+        { time: '13:03', height: 0.30, type: 'Low' },
+        { time: '19:19', height: 5.20, type: 'High' }
+    ],
+    22: [
+        { time: '01:18', height: 0.40, type: 'Low' },
+        { time: '07:33', height: 5.20, type: 'High' },
+        { time: '13:39', height: 0.50, type: 'Low' },
+        { time: '19:57', height: 5.00, type: 'High' }
+    ],
+    23: [
+        { time: '01:56', height: 0.60, type: 'Low' },
+        { time: '08:16', height: 4.90, type: 'High' },
+        { time: '14:18', height: 0.80, type: 'Low' },
+        { time: '20:39', height: 4.80, type: 'High' }
+    ],
+    24: [
+        { time: '02:39', height: 0.90, type: 'Low' },
+        { time: '09:03', height: 4.60, type: 'High' },
+        { time: '15:04', height: 1.20, type: 'Low' },
+        { time: '21:27', height: 4.40, type: 'High' }
+    ],
+    25: [
+        { time: '03:30', height: 1.30, type: 'Low' },
+        { time: '10:03', height: 4.10, type: 'High' },
+        { time: '16:02', height: 1.70, type: 'Low' },
+        { time: '22:29', height: 4.10, type: 'High' }
+    ],
+    26: [
+        { time: '04:41', height: 1.60, type: 'Low' },
+        { time: '11:28', height: 3.80, type: 'High' },
+        { time: '17:30', height: 2.00, type: 'Low' },
+        { time: '23:57', height: 3.80, type: 'High' }
+    ],
+    27: [
+        { time: '06:29', height: 1.70, type: 'Low' },
+        { time: '13:19', height: 3.80, type: 'High' },
+        { time: '19:25', height: 1.90, type: 'Low' }
+    ],
+    28: [
+        { time: '01:40', height: 3.90, type: 'High' },
+        { time: '08:13', height: 1.40, type: 'Low' },
+        { time: '14:43', height: 4.00, type: 'High' },
+        { time: '20:42', height: 1.50, type: 'Low' }
+    ],
+    29: [
+        { time: '03:57', height: 4.20, type: 'High' },
+        { time: '10:15', height: 1.00, type: 'Low' },
+        { time: '16:39', height: 4.40, type: 'High' },
+        { time: '22:34', height: 1.10, type: 'Low' }
+    ],
+    30: [
+        { time: '04:51', height: 4.50, type: 'High' },
+        { time: '11:02', height: 0.70, type: 'Low' },
+        { time: '17:24', height: 4.70, type: 'High' },
+        { time: '23:18', height: 0.80, type: 'Low' }
+    ],
+    31: [
+        { time: '05:34', height: 4.80, type: 'High' },
+        { time: '11:43', height: 0.40, type: 'Low' },
+        { time: '18:02', height: 4.90, type: 'High' },
+        { time: '23:57', height: 0.60, type: 'Low' }
+    ]
+};
+
+// Tarbert Island Tide Table - April 2026
+const TIDE_TABLE_APR_2026 = {
+    1: [
+        { time: '06:12', height: 5.00, type: 'High' },
+        { time: '12:20', height: 0.30, type: 'Low' },
+        { time: '18:36', height: 5.00, type: 'High' }
+    ],
+    2: [
+        { time: '00:33', height: 0.50, type: 'Low' },
+        { time: '06:47', height: 5.10, type: 'High' },
+        { time: '12:55', height: 0.40, type: 'Low' },
+        { time: '19:08', height: 5.00, type: 'High' }
+    ],
+    3: [
+        { time: '01:04', height: 0.50, type: 'Low' },
+        { time: '07:20', height: 5.10, type: 'High' },
+        { time: '13:26', height: 0.50, type: 'Low' },
+        { time: '19:39', height: 5.00, type: 'High' }
+    ],
+    4: [
+        { time: '01:35', height: 0.60, type: 'Low' },
+        { time: '07:51', height: 5.00, type: 'High' },
+        { time: '13:55', height: 0.70, type: 'Low' },
+        { time: '20:09', height: 4.90, type: 'High' }
+    ],
+    5: [
+        { time: '02:04', height: 0.80, type: 'Low' },
+        { time: '08:22', height: 4.80, type: 'High' },
+        { time: '14:23', height: 1.00, type: 'Low' },
+        { time: '20:40', height: 4.80, type: 'High' }
+    ],
+    6: [
+        { time: '02:34', height: 1.00, type: 'Low' },
+        { time: '08:54', height: 4.60, type: 'High' },
+        { time: '14:53', height: 1.30, type: 'Low' },
+        { time: '21:12', height: 4.60, type: 'High' }
+    ],
+    7: [
+        { time: '03:06', height: 1.20, type: 'Low' },
+        { time: '09:27', height: 4.30, type: 'High' },
+        { time: '15:25', height: 1.60, type: 'Low' },
+        { time: '21:48', height: 4.30, type: 'High' }
+    ],
+    8: [
+        { time: '03:41', height: 1.50, type: 'Low' },
+        { time: '10:06', height: 4.00, type: 'High' },
+        { time: '16:03', height: 1.80, type: 'Low' },
+        { time: '22:30', height: 4.00, type: 'High' }
+    ],
+    9: [
+        { time: '04:25', height: 1.70, type: 'Low' },
+        { time: '10:56', height: 3.70, type: 'High' },
+        { time: '16:54', height: 2.10, type: 'Low' },
+        { time: '23:24', height: 3.80, type: 'High' }
+    ],
+    10: [
+        { time: '05:26', height: 2.00, type: 'Low' },
+        { time: '12:08', height: 3.50, type: 'High' },
+        { time: '18:12', height: 2.30, type: 'Low' }
+    ],
+    11: [
+        { time: '00:38', height: 3.60, type: 'High' },
+        { time: '06:53', height: 2.00, type: 'Low' },
+        { time: '14:02', height: 3.50, type: 'High' },
+        { time: '19:57', height: 2.20, type: 'Low' }
+    ],
+    12: [
+        { time: '02:10', height: 3.70, type: 'High' },
+        { time: '08:33', height: 1.80, type: 'Low' },
+        { time: '15:14', height: 3.70, type: 'High' },
+        { time: '21:12', height: 1.80, type: 'Low' }
+    ],
+    13: [
+        { time: '03:19', height: 3.90, type: 'High' },
+        { time: '09:36', height: 1.40, type: 'Low' },
+        { time: '16:04', height: 4.10, type: 'High' },
+        { time: '22:02', height: 1.40, type: 'Low' }
+    ],
+    14: [
+        { time: '04:09', height: 4.30, type: 'High' },
+        { time: '10:22', height: 1.00, type: 'Low' },
+        { time: '16:46', height: 4.40, type: 'High' },
+        { time: '22:45', height: 1.00, type: 'Low' }
+    ],
+    15: [
+        { time: '04:52', height: 4.60, type: 'High' },
+        { time: '11:04', height: 0.70, type: 'Low' },
+        { time: '17:25', height: 4.70, type: 'High' },
+        { time: '23:25', height: 0.70, type: 'Low' }
+    ],
+    16: [
+        { time: '05:32', height: 4.90, type: 'High' },
+        { time: '11:43', height: 0.40, type: 'Low' },
+        { time: '18:03', height: 5.00, type: 'High' }
+    ],
+    17: [
+        { time: '00:04', height: 0.40, type: 'Low' },
+        { time: '06:12', height: 5.10, type: 'High' },
+        { time: '12:22', height: 0.20, type: 'Low' },
+        { time: '18:40', height: 5.20, type: 'High' }
+    ],
+    18: [
+        { time: '00:43', height: 0.30, type: 'Low' },
+        { time: '06:52', height: 5.20, type: 'High' },
+        { time: '13:01', height: 0.20, type: 'Low' },
+        { time: '19:18', height: 5.20, type: 'High' }
+    ],
+    19: [
+        { time: '01:21', height: 0.20, type: 'Low' },
+        { time: '07:34', height: 5.20, type: 'High' },
+        { time: '13:40', height: 0.30, type: 'Low' },
+        { time: '19:58', height: 5.20, type: 'High' }
+    ],
+    20: [
+        { time: '02:01', height: 0.30, type: 'Low' },
+        { time: '08:18', height: 5.10, type: 'High' },
+        { time: '14:20', height: 0.50, type: 'Low' },
+        { time: '20:40', height: 5.00, type: 'High' }
+    ],
+    21: [
+        { time: '02:43', height: 0.50, type: 'Low' },
+        { time: '09:05', height: 4.80, type: 'High' },
+        { time: '15:03', height: 0.80, type: 'Low' },
+        { time: '21:25', height: 4.70, type: 'High' }
+    ],
+    22: [
+        { time: '03:29', height: 0.80, type: 'Low' },
+        { time: '09:57', height: 4.40, type: 'High' },
+        { time: '15:53', height: 1.20, type: 'Low' },
+        { time: '22:16', height: 4.40, type: 'High' }
+    ],
+    23: [
+        { time: '04:24', height: 1.10, type: 'Low' },
+        { time: '11:00', height: 4.10, type: 'High' },
+        { time: '16:56', height: 1.60, type: 'Low' },
+        { time: '23:19', height: 4.00, type: 'High' }
+    ],
+    24: [
+        { time: '05:38', height: 1.30, type: 'Low' },
+        { time: '12:23', height: 3.80, type: 'High' },
+        { time: '18:24', height: 1.80, type: 'Low' }
+    ],
+    25: [
+        { time: '00:40', height: 3.80, type: 'High' },
+        { time: '07:10', height: 1.40, type: 'Low' },
+        { time: '14:03', height: 3.80, type: 'High' },
+        { time: '20:00', height: 1.70, type: 'Low' }
+    ],
+    26: [
+        { time: '02:15', height: 3.90, type: 'High' },
+        { time: '08:37', height: 1.20, type: 'Low' },
+        { time: '15:15', height: 4.00, type: 'High' },
+        { time: '21:11', height: 1.40, type: 'Low' }
+    ],
+    27: [
+        { time: '03:27', height: 4.10, type: 'High' },
+        { time: '09:38', height: 1.00, type: 'Low' },
+        { time: '16:09', height: 4.30, type: 'High' },
+        { time: '22:03', height: 1.10, type: 'Low' }
+    ],
+    28: [
+        { time: '04:20', height: 4.30, type: 'High' },
+        { time: '10:27', height: 0.80, type: 'Low' },
+        { time: '16:53', height: 4.50, type: 'High' },
+        { time: '22:47', height: 0.90, type: 'Low' }
+    ],
+    29: [
+        { time: '05:04', height: 4.50, type: 'High' },
+        { time: '11:09', height: 0.60, type: 'Low' },
+        { time: '17:32', height: 4.70, type: 'High' },
+        { time: '23:27', height: 0.70, type: 'Low' }
+    ],
+    30: [
+        { time: '05:43', height: 4.70, type: 'High' },
+        { time: '11:47', height: 0.60, type: 'Low' },
+        { time: '18:07', height: 4.80, type: 'High' }
+    ]
+};
+
 // DOM Elements
 const els = {
     temp: document.getElementById('current-temp'),
@@ -377,6 +742,10 @@ function getTidesForDate(date) {
         return TIDE_TABLE_JAN_2026[day] || [];
     } else if (year === 2026 && month === 2) {
         return TIDE_TABLE_FEB_2026[day] || [];
+    } else if (year === 2026 && month === 3) {
+        return TIDE_TABLE_MAR_2026[day] || [];
+    } else if (year === 2026 && month === 4) {
+        return TIDE_TABLE_APR_2026[day] || [];
     }
 
     return [];
