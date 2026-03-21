@@ -1043,8 +1043,9 @@ function renderTideChart(now, todayTides, nextHigh, nextLow) {
                 }
 
                 ctx.save();
-                ctx.font = '10px serif';
+                ctx.font = '14px Inter, sans-serif'; // Larger, cleaner font
                 ctx.textAlign = 'center';
+                ctx.textBaseline = 'bottom'; // Better for positioning above the chartArea
 
                 sunEvents.forEach(evt => {
                     if (evt.time >= startTime && evt.time <= new Date(startTime.getTime() + 24 * 60 * 60 * 1000)) {
@@ -1056,13 +1057,14 @@ function renderTideChart(now, todayTides, nextHigh, nextLow) {
                             // Marker line
                             ctx.beginPath();
                             ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+                            ctx.lineWidth = 1;
                             ctx.setLineDash([2, 5]);
                             ctx.moveTo(xPos, chartArea.top);
                             ctx.lineTo(xPos, chartArea.bottom);
                             ctx.stroke();
 
                             // Icon
-                            ctx.globalAlpha = 0.5;
+                            ctx.globalAlpha = 0.8; // More visible
                             ctx.fillText(evt.char, xPos, chartArea.top - 5);
                         }
                     }
@@ -1119,6 +1121,12 @@ function renderTideChart(now, todayTides, nextHigh, nextLow) {
                 responsive: true,
                 maintainAspectRatio: false,
                 interaction: { mode: 'index', intersect: false },
+                layout: {
+                    padding: {
+                        top: 25, // Give space for icons
+                        bottom: 10
+                    }
+                },
                 animation: {
                     duration: 1000,
                     easing: 'easeOutQuart'
