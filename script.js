@@ -1006,52 +1006,6 @@ function renderTideChart(now, todayTides, nextHigh, nextLow) {
             }
         });
 
-        // Day/Night shading plugin - Atmosphere version
-        const dayNightPlugin = {
-            id: 'dayNightShading',
-            beforeDraw: (chart) => {
-                if (!lastWeatherData) return;
-                const { ctx, chartArea, scales: { x, y } } = chart;
-                const daily = lastWeatherData.daily;
-
-                // Get sun events
-                const sunEvents = [];
-                for (let i = 0; i < 3; i++) { // Yesterday, Today, Tomorrow
-                    if (daily.sunrise[i]) sunEvents.push({ time: new Date(daily.sunrise[i]), type: 'sunrise' });
-                    if (daily.sunset[i]) sunEvents.push({ time: new Date(daily.sunset[i]), type: 'sunset' });
-                }
-                sunEvents.sort((a, b) => a.time - b.time);
-
-                ctx.save();
-
-                // Draw atmospheric shading
-                fullDateLabels.forEach((time, index) => {
-                    const isNight = isTimeNight(time, sunEvents);
-                    if (isNight) {
-                        const xStart = x.getPixelForValue(labels[index]);
-                        const xEnd = x.getPixelForValue(labels[index + 1] || labels[index]);
-                        const width = xEnd - xStart;
-                        if (width <= 0) return;
-
-                        // Deep indigo for night
-                        ctx.fillStyle = 'rgba(15, 23, 42, 0.25)';
-                        ctx.fillRect(xStart, chartArea.top, width, chartArea.bottom - chartArea.top);
-
-                        // Add very subtle twilight edges
-                        const prevIsNight = index > 0 ? isTimeNight(fullDateLabels[index - 1], sunEvents) : true;
-                        if (!prevIsNight) { // Just entered night (Sunset)
-                            const grad = ctx.createLinearGradient(xStart, 0, xStart + 20, 0);
-                            grad.addColorStop(0, 'rgba(236, 72, 153, 0.1)'); // Pinkish sunset
-                            grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
-                            ctx.fillStyle = grad;
-                            ctx.fillRect(xStart, chartArea.top, 20, chartArea.bottom - chartArea.top);
-                        }
-                    }
-                });
-                ctx.restore();
-            }
-        };
-
         // Vertical line plugin
         const verticalLinePlugin = {
             id: 'verticalLine',
@@ -1076,20 +1030,32 @@ function renderTideChart(now, todayTides, nextHigh, nextLow) {
             }
         };
 
+        // Prepared data matches well with Chart.js defaults
         window.tideChartInstance = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: labels,
                 datasets: [
                     {
-                        label: 'Current',
+                        label: 'Current Tide',
                         data: levels.map((l, i) => i === 0 ? l : null),
                         pointRadius: 6,
                         pointBackgroundColor: '#fff',
                         pointBorderColor: '#38bdf8',
                         pointBorderWidth: 4,
                         showLine: false,
-                        zIndex: 20
+                        zIndex: 30
+                    },
+                    {
+                        label: 'Tide Levels (m)',
+                        data: levels,
+                        borderColor: '#38bdf8',
+                        backgroundColor: gradient,
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 0,
+                        zIndex: 10
                     },
                     {
                         label: 'Peaks',
@@ -1097,29 +1063,14 @@ function renderTideChart(now, todayTides, nextHigh, nextLow) {
                         pointRadius: 5,
                         pointBackgroundColor: (context) => {
                             const index = context.dataIndex;
-                            const label = labels[index];
                             const time = fullDateLabels[index];
-                            const event = allEvents.find(e => {
-                                const eTime = formatTimeFromDate(e.date);
-                                // Robust match: same hour or very close
-                                return eTime === label || Math.abs(e.date - time) < 30 * 60 * 1000;
-                            });
+                            const event = allEvents.find(e => Math.abs(e.date - time) < 45 * 60 * 1000);
                             return event && event.type === 'High' ? '#4ade80' : '#f87171';
                         },
-                        pointBorderColor: '#000',
-                        pointBorderWidth: 1,
+                        pointBorderColor: '#1e293b',
+                        pointBorderWidth: 2,
                         showLine: false,
-                        zIndex: 15
-                    },
-                    {
-                        label: 'Level (m)',
-                        data: levels,
-                        borderColor: '#38bdf8',
-                        backgroundColor: gradient,
-                        borderWidth: 3,
-                        fill: true,
-                        tension: 0.4,
-                        pointRadius: 0
+                        zIndex: 20
                     }
                 ]
             },
@@ -1127,22 +1078,25 @@ function renderTideChart(now, todayTides, nextHigh, nextLow) {
                 responsive: true,
                 maintainAspectRatio: false,
                 interaction: { mode: 'index', intersect: false },
-                animation: { duration: 1500, easing: 'easeInOutQuart' },
+                animation: {
+                    duration: 1000,
+                    easing: 'easeOutQuart'
+                },
                 plugins: {
                     legend: false,
                     tooltip: {
                         backgroundColor: 'rgba(15, 23, 42, 0.95)',
-                        padding: 12,
+                        padding: 10,
                         displayColors: false,
                         callbacks: {
-                            label: (context) => `Depth: ${context.parsed.y.toFixed(2)}m`
+                            label: (context) => `Level: ${context.parsed.y.toFixed(2)}m`
                         }
                     }
                 },
                 scales: {
                     x: {
                         grid: { display: false },
-                        ticks: { color: '#94a3b8', font: { size: 10 }, maxTicksLimit: 6 }
+                        ticks: { color: '#64748b', font: { size: 9 }, maxTicksLimit: 6 }
                     },
                     y: {
                         display: false,
@@ -1151,7 +1105,7 @@ function renderTideChart(now, todayTides, nextHigh, nextLow) {
                     }
                 }
             },
-            plugins: [dayNightPlugin, verticalLinePlugin]
+            plugins: [verticalLinePlugin]
         });
     } catch (err) {
         console.error("Tide Chart error:", err);

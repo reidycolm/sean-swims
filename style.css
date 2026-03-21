@@ -50,12 +50,12 @@ body {
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(20px) scale(0.98);
+        transform: translateY(10px);
     }
 
     to {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: translateY(0);
     }
 }
 
@@ -82,9 +82,8 @@ body {
 }
 
 .card {
-    animation: fadeIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-    animation-delay: calc(var(--card-index, 0) * 0.12s);
-    opacity: 0;
+    animation: fadeIn 0.5s ease-out both;
+    animation-delay: calc(var(--card-index, 0) * 0.08s);
 }
 
 .card:nth-child(1) {
@@ -1008,21 +1007,8 @@ body {
 }
 
 .chart-container-wide canvas {
-    animation: waveGlow 8s ease-in-out infinite;
-}
-
-@keyframes waveGlow {
-
-    0%,
-    100% {
-        filter: drop-shadow(0 0 2px rgba(56, 189, 248, 0.1));
-        opacity: 0.98;
-    }
-
-    50% {
-        filter: drop-shadow(0 0 5px rgba(56, 189, 248, 0.15));
-        opacity: 1;
-    }
+    /* Standard opacity for cleaner look */
+    opacity: 1;
 }
 
 /* Forecast */
@@ -1560,6 +1546,6 @@ footer a:hover {
     }
 
     .chart-container-wide {
-        height: 120px;
+        height: 125px;
     }
 }
