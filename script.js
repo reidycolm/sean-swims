@@ -1006,7 +1006,7 @@ function renderTideChart(now, todayTides, nextHigh, nextLow) {
             }
         });
 
-        // Day/Night shading plugin
+        // Day/Night shading plugin - Atmosphere version
         const dayNightPlugin = {
             id: 'dayNightShading',
             beforeDraw: (chart) => {
@@ -1014,32 +1014,38 @@ function renderTideChart(now, todayTides, nextHigh, nextLow) {
                 const { ctx, chartArea, scales: { x, y } } = chart;
                 const daily = lastWeatherData.daily;
 
-                // Get sunrise/sunset times for relevant days
+                // Get sun events
                 const sunEvents = [];
-                for (let i = 1; i <= 2; i++) { // Today and Tomorrow
+                for (let i = 0; i < 3; i++) { // Yesterday, Today, Tomorrow
                     if (daily.sunrise[i]) sunEvents.push({ time: new Date(daily.sunrise[i]), type: 'sunrise' });
                     if (daily.sunset[i]) sunEvents.push({ time: new Date(daily.sunset[i]), type: 'sunset' });
                 }
-
                 sunEvents.sort((a, b) => a.time - b.time);
 
                 ctx.save();
-                // Draw night shading between sunset and sunrise
-                // Simplified: Start with background if first event is sunrise
-                let currentIsNight = startTime < sunEvents[0]?.time && startTime.getHours() > 18 || startTime.getHours() < 6;
-                let lastX = chartArea.left;
 
-                // Create a range for each hour point to check day/night
+                // Draw atmospheric shading
                 fullDateLabels.forEach((time, index) => {
-                    const nextTime = fullDateLabels[index + 1] || new Date(time.getTime() + 60 * 60 * 1000);
                     const isNight = isTimeNight(time, sunEvents);
-
                     if (isNight) {
                         const xStart = x.getPixelForValue(labels[index]);
                         const xEnd = x.getPixelForValue(labels[index + 1] || labels[index]);
+                        const width = xEnd - xStart;
+                        if (width <= 0) return;
 
-                        ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
-                        ctx.fillRect(xStart, chartArea.top, xEnd - xStart, chartArea.bottom - chartArea.top);
+                        // Deep indigo for night
+                        ctx.fillStyle = 'rgba(15, 23, 42, 0.25)';
+                        ctx.fillRect(xStart, chartArea.top, width, chartArea.bottom - chartArea.top);
+
+                        // Add very subtle twilight edges
+                        const prevIsNight = index > 0 ? isTimeNight(fullDateLabels[index - 1], sunEvents) : true;
+                        if (!prevIsNight) { // Just entered night (Sunset)
+                            const grad = ctx.createLinearGradient(xStart, 0, xStart + 20, 0);
+                            grad.addColorStop(0, 'rgba(236, 72, 153, 0.1)'); // Pinkish sunset
+                            grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                            ctx.fillStyle = grad;
+                            ctx.fillRect(xStart, chartArea.top, 20, chartArea.bottom - chartArea.top);
+                        }
                     }
                 });
                 ctx.restore();

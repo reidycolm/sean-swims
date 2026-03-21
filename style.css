@@ -1008,7 +1008,7 @@ body {
 }
 
 .chart-container-wide canvas {
-    animation: waveGlow 5s ease-in-out infinite;
+    animation: waveGlow 8s ease-in-out infinite;
 }
 
 @keyframes waveGlow {
@@ -1016,11 +1016,11 @@ body {
     0%,
     100% {
         filter: drop-shadow(0 0 2px rgba(56, 189, 248, 0.1));
-        opacity: 0.95;
+        opacity: 0.98;
     }
 
     50% {
-        filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.3));
+        filter: drop-shadow(0 0 5px rgba(56, 189, 248, 0.15));
         opacity: 1;
     }
 }
