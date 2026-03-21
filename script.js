@@ -947,7 +947,8 @@ function renderTidesFromTable() {
 }
 
 function renderTideChart(now, todayTides, nextHigh, nextLow) {
-    if (!els.tideChartCtx) return;
+    const canvas = document.getElementById('tideChart');
+    if (!canvas) return;
 
     // Generate a 24-hour tide curve simulation
     const labels = [];
@@ -972,117 +973,107 @@ function renderTideChart(now, todayTides, nextHigh, nextLow) {
     // Sort by time
     allEvents.sort((a, b) => a.date - b.date);
 
-    // Generate 30 points over next 24 hours
+    // Generate 32 points for a smoother curve (24 hours + overlap)
     const startTime = new Date(now);
     startTime.setMinutes(0, 0, 0);
 
     for (let i = 0; i < 25; i++) {
         const pointTime = new Date(startTime.getTime() + i * 60 * 60 * 1000);
         labels.push(formatTimeFromDate(pointTime));
-
-        // Interpolate tide level based on surrounding events
         const level = interpolateTideLevel(pointTime, allEvents);
         levels.push(level);
     }
 
     if (window.tideChartInstance) window.tideChartInstance.destroy();
 
-    const ctx = els.tideChartCtx;
-    if (!ctx) return;
+    try {
+        const ctx = canvas.getContext('2d');
+        const gradient = ctx.createLinearGradient(0, 0, 0, 140);
+        gradient.addColorStop(0, 'rgba(56, 189, 248, 0.4)');
+        gradient.addColorStop(1, 'rgba(56, 189, 248, 0)');
 
-    // Create height-dependent gradient
-    const gradient = ctx.createLinearGradient(0, 0, 0, 140);
-    gradient.addColorStop(0, 'rgba(56, 189, 248, 0.5)');
-    gradient.addColorStop(1, 'rgba(56, 189, 248, 0)');
-
-    // Add peak markers to the data
-    const peakMarkers = Array(levels.length).fill(null);
-    allEvents.forEach(event => {
-        if (event.date >= startTime && event.date <= new Date(startTime.getTime() + 24 * 60 * 60 * 1000)) {
+        // Prepare peak markers
+        const peakMarkers = Array(levels.length).fill(null);
+        allEvents.forEach(event => {
             const hourOffset = (event.date - startTime) / (1000 * 60 * 60);
             const index = Math.round(hourOffset);
             if (index >= 0 && index < peakMarkers.length) {
                 peakMarkers[index] = event.height;
             }
-        }
-    });
+        });
 
-    window.tideChartInstance = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [
-                {
-                    label: 'Current Level',
-                    data: levels.map((l, i) => i === 0 ? l : null),
-                    pointRadius: 6,
-                    pointBackgroundColor: '#fff',
-                    pointBorderColor: '#38bdf8',
-                    pointBorderWidth: 4,
-                    showLine: false,
-                    zIndex: 10
-                },
-                {
-                    label: 'Peaks',
-                    data: peakMarkers,
-                    pointRadius: 4,
-                    pointBackgroundColor: (context) => {
-                        const index = context.dataIndex;
-                        const event = allEvents.find(e => formatTimeFromDate(e.date) === labels[index]);
-                        return event && event.type === 'High' ? '#38bdf8' : '#f87171';
+        window.tideChartInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Current',
+                        data: levels.map((l, i) => i === 0 ? l : null),
+                        pointRadius: 6,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: '#38bdf8',
+                        pointBorderWidth: 4,
+                        showLine: false,
+                        zIndex: 10
                     },
-                    pointBorderColor: 'rgba(255,255,255,0.2)',
-                    pointBorderWidth: 2,
-                    showLine: false
-                },
-                {
-                    label: 'Tide Level (m)',
-                    data: levels,
-                    borderColor: '#38bdf8',
-                    backgroundColor: gradient,
-                    borderWidth: 3,
-                    fill: true,
-                    tension: 0.4,
-                    pointRadius: 0
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            animation: {
-                duration: 2000,
-                easing: 'easeInOutQuart'
+                    {
+                        label: 'Peaks',
+                        data: peakMarkers,
+                        pointRadius: 4,
+                        pointBackgroundColor: (context) => {
+                            const index = context.dataIndex;
+                            const label = labels[index];
+                            const event = allEvents.find(e => formatTimeFromDate(e.date) === label);
+                            return event && event.type === 'High' ? '#38bdf8' : '#f87171';
+                        },
+                        pointBorderColor: 'rgba(255,255,255,0.2)',
+                        pointBorderWidth: 2,
+                        showLine: false
+                    },
+                    {
+                        label: 'Level (m)',
+                        data: levels,
+                        borderColor: '#38bdf8',
+                        backgroundColor: gradient,
+                        borderWidth: 2.5,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 0
+                    }
+                ]
             },
-            plugins: {
-                legend: false,
-                tooltip: {
-                    backgroundColor: 'rgba(15, 23, 42, 0.9)',
-                    titleColor: '#94a3b8',
-                    bodyColor: '#fff',
-                    bodyFont: { weight: 'bold' },
-                    displayColors: false,
-                    padding: 12,
-                    borderColor: 'rgba(255,255,255,0.1)',
-                    borderWidth: 1,
-                    callbacks: {
-                        label: (context) => `${context.parsed.y.toFixed(2)}m`
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: { duration: 1500, easing: 'easeInOutQuart' },
+                plugins: {
+                    legend: false,
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                        padding: 10,
+                        displayColors: false,
+                        callbacks: {
+                            label: (context) => `${context.parsed.y.toFixed(2)}m`
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#64748b', font: { size: 10 }, maxTicksLimit: 6 }
+                    },
+                    y: {
+                        display: false,
+                        min: 0,
+                        max: 6
                     }
                 }
-            },
-            scales: {
-                x: {
-                    grid: { display: false },
-                    ticks: { color: '#64748b', maxTicksLimit: 6, font: { size: 10 } }
-                },
-                y: {
-                    display: false,
-                    min: 0,
-                    max: 6 // Max tide in Tarbert is usually ~5.5m
-                }
             }
-        }
-    });
+        });
+    } catch (err) {
+        console.error("Tide Chart error:", err);
+    }
 }
 
 // Interpolate tide level between known points using sine wave approximation
