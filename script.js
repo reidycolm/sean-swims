@@ -986,44 +986,97 @@ function renderTideChart(now, todayTides, nextHigh, nextLow) {
     }
 
     if (window.tideChartInstance) window.tideChartInstance.destroy();
+
+    const ctx = els.tideChartCtx.getContext('2d');
+    const gradient = ctx.createLinearGradient(0, 0, 0, 140);
+    gradient.addColorStop(0, 'rgba(56, 189, 248, 0.5)');
+    gradient.addColorStop(1, 'rgba(56, 189, 248, 0)');
+
+    // Add peak markers to the data
+    const peakMarkers = Array(levels.length).fill(null);
+    allEvents.forEach(event => {
+        if (event.date >= startTime && event.date <= new Date(startTime.getTime() + 24 * 60 * 60 * 1000)) {
+            const hourOffset = (event.date - startTime) / (1000 * 60 * 60);
+            const index = Math.round(hourOffset);
+            if (index >= 0 && index < peakMarkers.length) {
+                peakMarkers[index] = event.height;
+            }
+        }
+    });
+
     window.tideChartInstance = new Chart(els.tideChartCtx, {
         type: 'line',
         data: {
             labels: labels,
-            datasets: [{
-                label: 'Tide Level (m)',
-                data: levels,
-                borderColor: '#38bdf8',
-                backgroundColor: 'rgba(56, 189, 248, 0.15)',
-                borderWidth: 2.5,
-                fill: true,
-                tension: 0.4,
-                pointRadius: 0
-            },
-            {
-                label: 'Current',
-                data: [levels[0], ...Array(levels.length - 1).fill(null)],
-                pointRadius: 6,
-                pointBackgroundColor: '#fff',
-                pointBorderColor: '#38bdf8',
-                pointBorderWidth: 4,
-                showLine: false,
-                order: 0
-            }]
+            datasets: [
+                {
+                    label: 'Current Level',
+                    data: levels.map((l, i) => i === 0 ? l : null),
+                    pointRadius: 6,
+                    pointBackgroundColor: '#fff',
+                    pointBorderColor: '#38bdf8',
+                    pointBorderWidth: 4,
+                    showLine: false,
+                    zIndex: 10
+                },
+                {
+                    label: 'Peaks',
+                    data: peakMarkers,
+                    pointRadius: 4,
+                    pointBackgroundColor: (context) => {
+                        const index = context.dataIndex;
+                        const event = allEvents.find(e => formatTimeFromDate(e.date) === labels[index]);
+                        return event && event.type === 'High' ? '#38bdf8' : '#f87171';
+                    },
+                    pointBorderColor: 'rgba(255,255,255,0.2)',
+                    pointBorderWidth: 2,
+                    showLine: false
+                },
+                {
+                    label: 'Tide Level (m)',
+                    data: levels,
+                    borderColor: '#38bdf8',
+                    backgroundColor: gradient,
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 0
+                }
+            ]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: { legend: false },
+            animation: {
+                duration: 2000,
+                easing: 'easeInOutQuart'
+            },
+            plugins: {
+                legend: false,
+                tooltip: {
+                    backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                    titleColor: '#94a3b8',
+                    bodyColor: '#fff',
+                    bodyFont: { weight: 'bold' },
+                    displayColors: false,
+                    padding: 12,
+                    borderColor: 'rgba(255,255,255,0.1)',
+                    borderWidth: 1,
+                    callbacks: {
+                        label: (context) => `${context.parsed.y.toFixed(2)}m`
+                    }
+                }
+            },
             scales: {
                 x: {
-                    grid: { display: false, color: 'rgba(255,255,255,0.05)' },
-                    ticks: { color: '#64748b', maxTicksLimit: 6, font: { size: 11 } }
+                    grid: { display: false },
+                    ticks: { color: '#64748b', maxTicksLimit: 6, font: { size: 10 } }
                 },
-                y: { display: false }
-            },
-            elements: {
-                point: { radius: 0, hitRadius: 10 }
+                y: {
+                    display: false,
+                    min: 0,
+                    max: 6 // Max tide in Tarbert is usually ~5.5m
+                }
             }
         }
     });
