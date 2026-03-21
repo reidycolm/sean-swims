@@ -1030,6 +1030,47 @@ function renderTideChart(now, todayTides, nextHigh, nextLow) {
             }
         };
 
+        const sunMarkerPlugin = {
+            id: 'sunMarker',
+            afterDraw: (chart) => {
+                if (!lastWeatherData) return;
+                const daily = lastWeatherData.daily;
+                const { ctx, chartArea, scales: { x } } = chart;
+                const sunEvents = [];
+                for (let i = 0; i < 3; i++) {
+                    if (daily.sunrise[i]) sunEvents.push({ time: new Date(daily.sunrise[i]), char: '☀️' });
+                    if (daily.sunset[i]) sunEvents.push({ time: new Date(daily.sunset[i]), char: '🌙' });
+                }
+
+                ctx.save();
+                ctx.font = '10px serif';
+                ctx.textAlign = 'center';
+
+                sunEvents.forEach(evt => {
+                    if (evt.time >= startTime && evt.time <= new Date(startTime.getTime() + 24 * 60 * 60 * 1000)) {
+                        const hourOffset = (evt.time - startTime) / (1000 * 60 * 60);
+                        const labelIdx = Math.floor(hourOffset);
+                        if (labelIdx >= 0 && labelIdx < labels.length) {
+                            const xPos = x.getPixelForValue(labels[labelIdx]);
+
+                            // Marker line
+                            ctx.beginPath();
+                            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+                            ctx.setLineDash([2, 5]);
+                            ctx.moveTo(xPos, chartArea.top);
+                            ctx.lineTo(xPos, chartArea.bottom);
+                            ctx.stroke();
+
+                            // Icon
+                            ctx.globalAlpha = 0.5;
+                            ctx.fillText(evt.char, xPos, chartArea.top - 5);
+                        }
+                    }
+                });
+                ctx.restore();
+            }
+        };
+
         // Prepared data matches well with Chart.js defaults
         window.tideChartInstance = new Chart(ctx, {
             type: 'line',
@@ -1105,7 +1146,7 @@ function renderTideChart(now, todayTides, nextHigh, nextLow) {
                     }
                 }
             },
-            plugins: [verticalLinePlugin]
+            plugins: [verticalLinePlugin, sunMarkerPlugin]
         });
     } catch (err) {
         console.error("Tide Chart error:", err);
