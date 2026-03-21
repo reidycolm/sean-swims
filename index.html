@@ -21,7 +21,15 @@
     <!-- Icons (feather icons for simplicity and clean look) -->
     <script src="https://unpkg.com/feather-icons"></script>
 
-    <link rel="stylesheet" href="style.css?v=6">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌊</text></svg>">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Tarbert Swim">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="stylesheet" href="style.css?v=10">
 </head>
 
 <body>
@@ -48,9 +56,27 @@
         <!-- Hero Section -->
         <header class="hero">
             <div class="current-weather">
-                <div class="temp-display">
-                    <span id="current-temp" class="loading">--</span><span class="unit">°C</span>
+                <div class="hero-temp-grid">
+                    <div class="temp-group air">
+                        <div class="temp-label">Air</div>
+                        <div class="temp-value">
+                            <span id="current-temp" class="loading">--</span><span class="unit">°C</span>
+                        </div>
+                        <div class="feels-like" id="feels-like"></div>
+                    </div>
+
+                    <div class="temp-divider"></div>
+
+                    <div class="temp-group sea">
+                        <div class="temp-label">Sea</div>
+                        <div class="temp-value">
+                            <span id="sea-temp-hero">--</span><span class="unit">°C</span>
+                            <span class="temp-trend" id="sea-temp-trend-hero"></span>
+                        </div>
+                        <div class="sea-status">Tarbert Pier</div>
+                    </div>
                 </div>
+
                 <div class="condition-display">
                     <i id="weather-icon" data-feather="cloud" class="large-icon"></i>
                     <span id="weather-desc">Loading...</span>
@@ -84,6 +110,11 @@
                         <span class="tag">Next 24h</span>
                     </div>
                 </div>
+                <div class="moon-phase-bar">
+                    <span class="moon-icon" id="moon-icon">🌑</span>
+                    <span class="moon-label" id="moon-label">--</span>
+                    <span class="moon-tide-type" id="moon-tide-type"></span>
+                </div>
 
                 <div class="tide-summary">
                     <div class="tide-item high">
@@ -91,6 +122,8 @@
                         <div class="tide-info">
                             <span class="label">Next High</span>
                             <span class="time" id="next-high-tide">--:--</span>
+                            <span class="tide-height" id="next-high-height"></span>
+                            <span class="tide-context" id="high-tide-context"></span>
                         </div>
                     </div>
                     <div class="tide-item low">
@@ -98,9 +131,13 @@
                         <div class="tide-info">
                             <span class="label">Next Low</span>
                             <span class="time" id="next-low-tide">--:--</span>
+                            <span class="tide-height" id="next-low-height"></span>
+                            <span class="tide-context" id="low-tide-context"></span>
                         </div>
                     </div>
                 </div>
+
+                <div class="tide-state" id="tide-state"></div>
 
                 <div class="chart-container-wide">
                     <canvas id="tideChart"></canvas>
@@ -111,20 +148,58 @@
             <div class="card sea-card">
                 <div class="card-header">
                     <h3><i data-feather="anchor"></i> Sea Conditions</h3>
-                    <span class="tag">Live</span>
-                </div>
-                <div class="sea-grid">
-                    <div class="sea-metric water-temp">
-                        <div class="metric-value">
-                            <span id="sea-temp">--</span><span class="metric-unit">°C</span>
-                        </div>
-                        <div class="metric-label">Water Temperature</div>
+                    <div class="header-tags">
+                        <span class="tag swim-tag" id="swim-safety"></span>
+                        <span class="tag">Live</span>
                     </div>
-                    <div class="sea-metric wave-height">
-                        <div class="metric-value">
-                            <span id="wave-height">--</span><span class="metric-unit">m</span>
+                </div>
+                <div class="sea-layout">
+                    <div class="sea-metrics-col">
+                        <div class="sea-metric water-temp">
+                            <div class="metric-value">
+                                <span id="sea-temp">--</span><span class="metric-unit">°C</span>
+                                <span class="temp-trend" id="sea-temp-trend"></span>
+                            </div>
+                            <div class="metric-label">Water Temp</div>
                         </div>
-                        <div class="metric-label">Wave Height</div>
+                        <div class="sea-metric wave-height">
+                            <div class="metric-value">
+                                <span id="wave-height">--</span><span class="metric-unit">m</span>
+                            </div>
+                            <div class="metric-label">Wave Height</div>
+                            <div class="wave-status" id="wave-status">--</div>
+                        </div>
+                    </div>
+                    <div class="wind-compass-container">
+                        <div class="compass">
+                            <div class="compass-ring">
+                                <span class="cardinal cardinal-n">N</span>
+                                <span class="cardinal cardinal-e">E</span>
+                                <span class="cardinal cardinal-s">S</span>
+                                <span class="cardinal cardinal-w">W</span>
+                                <div class="compass-ticks"></div>
+                                <div class="compass-needle" id="compass-needle">
+                                    <div class="needle-north"></div>
+                                    <div class="needle-south"></div>
+                                </div>
+                                <div class="compass-center">
+                                    <span class="compass-speed" id="wind-speed">--</span>
+                                    <span class="compass-speed-unit">km/h</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="wind-details">
+                            <div class="wind-detail-row">
+                                <span class="wind-detail-label">Direction</span>
+                                <span class="wind-detail-value" id="wind-dir">--</span>
+                            </div>
+                            <div class="wind-detail-row">
+                                <span class="wind-detail-label">Gusts</span>
+                                <span class="wind-detail-value" id="wind-gusts">--<span
+                                        class="wind-detail-unit">km/h</span></span>
+                            </div>
+                            <div class="wind-beaufort" id="wind-beaufort">--</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -135,14 +210,24 @@
                     <h3><i data-feather="cloud-rain"></i> Rainfall</h3>
                     <span class="date-display" id="rain-date"></span>
                 </div>
-                <div class="card-value rainfall-content">
-                    <div class="rain-main">
-                        <span id="current-rain">--</span> <span class="unit">mm</span>
+                <div class="rainfall-premium-grid">
+                    <div class="rainfall-main-stat">
+                        <div class="stat-value"><span id="current-rain">--</span><span class="unit">mm</span></div>
+                        <div id="rain-status" class="rain-status">--</div>
                     </div>
-                    <div id="rain-status" class="rain-status">--</div>
-                    <div id="next-hour-rain" class="rain-forecast">Next Hour: --</div>
+                    <div class="rainfall-details-col">
+                        <div class="rain-detail">
+                            <span class="label">Chance</span>
+                            <span class="value" id="rain-prob">--%</span>
+                        </div>
+                        <div class="rain-detail">
+                            <span class="label">24h Total</span>
+                            <span class="value"><span id="rain-total">--</span><small>mm</small></span>
+                        </div>
+                    </div>
                 </div>
-                <div class="chart-container-small">
+                <div id="next-hour-rain" class="rain-forecast-banner">Next Hour: --</div>
+                <div class="chart-container-rain">
                     <canvas id="rainfallChart"></canvas>
                 </div>
             </div>
@@ -182,9 +267,16 @@
         </footer>
     </div>
 
-    <script src="script.js?v=2"></script>
+    <script src="script.js?v=4"></script>
     <script>
         feather.replace();
+        // Register Service Worker for PWA - forced update check
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js?v=2').then((reg) => {
+                reg.update();
+                console.log('Service Worker registered and forced update checked');
+            }).catch(err => console.log('SW registration failed:', err));
+        }
     </script>
 
 </body>

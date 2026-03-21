@@ -195,28 +195,78 @@ body {
     z-index: 1;
 }
 
-.temp-display {
-    font-size: 6rem;
-    font-weight: 800;
-    letter-spacing: -4px;
-    line-height: 1;
-    background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-light) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-shadow: 0 0 60px rgba(56, 189, 248, 0.2);
-    margin-bottom: 0.5rem;
-    position: relative;
-    display: inline-block;
+.hero-temp-grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2.5rem;
+    margin-bottom: 2rem;
 }
 
-.temp-display .unit {
-    font-size: 2rem;
-    color: var(--text-secondary);
+.temp-divider {
+    width: 2px;
+    height: 60px;
+    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.3), transparent);
+    flex-shrink: 0;
+}
+
+.temp-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.temp-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 0.25rem;
+}
+
+.temp-value {
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -2px;
+    position: relative;
+}
+
+.temp-group.air .temp-value {
+    background: linear-gradient(135deg, #fff 0%, var(--accent-light) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.temp-group.sea .temp-value {
+    background: linear-gradient(135deg, var(--accent-color) 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.temp-value .unit {
+    font-size: 1.15rem;
+    color: var(--text-muted);
     font-weight: 400;
     vertical-align: top;
-    margin-left: 4px;
-    -webkit-text-fill-color: var(--text-secondary);
+    margin-left: 2px;
+    -webkit-text-fill-color: var(--text-muted);
+}
+
+.sea-status {
+    font-size: 0.75rem;
+    color: var(--accent-color);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.feels-like {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.15rem;
 }
 
 .condition-display {
@@ -411,25 +461,138 @@ body {
     color: var(--text-primary);
 }
 
-/* Sea Conditions Card */
-.sea-card {
-    grid-column: span 1;
+.tide-height {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    margin-top: 0.1rem;
 }
 
-.sea-grid {
+.tide-state {
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    padding: 0.35rem 0.75rem;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.5px;
+}
+
+.tide-state .state-icon {
+    margin-right: 0.3rem;
+}
+
+/* Moon Phase */
+.moon-phase-bar {
     display: flex;
-    flex-direction: row;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    margin-bottom: 1.25rem;
+}
+
+.moon-icon {
+    font-size: 1.4rem;
+    line-height: 1;
+}
+
+.moon-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.moon-tide-type {
+    margin-left: auto;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+}
+
+.moon-tide-type.spring-tide {
+    background: rgba(56, 189, 248, 0.15);
+    color: var(--accent-color);
+}
+
+.moon-tide-type.neap-tide {
+    background: rgba(251, 191, 36, 0.12);
+    color: var(--warning-color);
+}
+
+/* Tide Height Context */
+.tide-context {
+    font-size: 0.65rem;
+    font-weight: 500;
+    margin-top: 0.15rem;
+    display: inline-block;
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+}
+
+.tide-context.above {
+    color: var(--accent-color);
+    background: rgba(56, 189, 248, 0.1);
+}
+
+.tide-context.below {
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Water Temp Trend */
+.temp-trend {
+    font-size: 0.8rem;
+    margin-left: 4px;
+    font-weight: 600;
+}
+
+.temp-trend.trend-up {
+    color: var(--danger-color);
+}
+
+.temp-trend.trend-down {
+    color: var(--accent-color);
+}
+
+.temp-trend.trend-stable {
+    color: var(--text-muted);
+}
+
+/* Sea Conditions Card */
+.sea-card {
+    grid-column: span 2;
+}
+
+.sea-layout {
+    display: flex;
+    gap: 1.5rem;
+    align-items: stretch;
+}
+
+.sea-metrics-col {
+    display: flex;
+    flex-direction: column;
     gap: 0.75rem;
+    flex: 0 0 auto;
+    min-width: 140px;
 }
 
 .sea-metric {
     flex: 1;
     text-align: center;
-    padding: 1rem 0.5rem;
+    padding: 1rem 1.25rem;
     background: rgba(255, 255, 255, 0.04);
     border-radius: var(--border-radius);
     border: 1px solid rgba(255, 255, 255, 0.06);
     transition: background 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .sea-metric:hover {
@@ -444,6 +607,250 @@ body {
 .sea-metric.wave-height {
     background: linear-gradient(135deg, rgba(74, 222, 128, 0.1) 0%, rgba(74, 222, 128, 0.03) 100%);
     border-color: rgba(74, 222, 128, 0.2);
+}
+
+/* Wind Compass */
+.wind-compass-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 1.25rem;
+}
+
+.compass {
+    flex-shrink: 0;
+}
+
+.compass-ring {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    border: 2px solid rgba(56, 189, 248, 0.3);
+    position: relative;
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.06) 0%, rgba(15, 23, 42, 0.8) 70%);
+    box-shadow:
+        0 0 20px rgba(56, 189, 248, 0.08),
+        inset 0 0 20px rgba(56, 189, 248, 0.05);
+}
+
+/* Compass tick marks (generated via box-shadow) */
+.compass-ticks {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+}
+
+.compass-ticks::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    width: 1px;
+    height: 8px;
+    background: rgba(56, 189, 248, 0.4);
+    transform: translateX(-50%);
+    box-shadow:
+        0 0 0 0 rgba(56, 189, 248, 0.4),
+        /* Tick marks at 45° intervals using rotation math — we do NE, SE, SW, NW */
+        /* These are approximated with left/top offsets */
+}
+
+/* Cardinal labels */
+.cardinal {
+    position: absolute;
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--accent-light);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    opacity: 0.8;
+}
+
+.cardinal-n {
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--danger-color);
+    opacity: 1;
+}
+
+.cardinal-s {
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.wave-status {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-top: 0.25rem;
+    letter-spacing: 0.5px;
+}
+
+.cardinal-e {
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.cardinal-w {
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Compass needle */
+.compass-needle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 4px;
+    height: 100px;
+    transform: translate(-50%, -50%) rotate(0deg);
+    transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 2;
+    filter: drop-shadow(0 0 4px rgba(56, 189, 248, 0.4));
+}
+
+.needle-north {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 46px solid var(--danger-color);
+    filter: drop-shadow(0 0 3px rgba(248, 113, 113, 0.5));
+}
+
+.needle-south {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+    border-top: 46px solid rgba(148, 163, 184, 0.4);
+}
+
+/* Center hub */
+.compass-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(15, 23, 42, 0.95);
+    border: 2px solid rgba(56, 189, 248, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
+}
+
+.compass-speed {
+    font-size: 0.85rem;
+    font-weight: 800;
+    font-family: var(--font-mono);
+    color: var(--text-primary);
+    line-height: 1;
+}
+
+.compass-speed-unit {
+    font-size: 0.4rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    line-height: 1;
+    margin-top: 1px;
+}
+
+/* Wind details panel */
+.wind-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.wind-detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.wind-detail-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+}
+
+.wind-detail-value {
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    color: var(--text-primary);
+}
+
+.wind-detail-unit {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    margin-left: 2px;
+}
+
+.wind-beaufort {
+    text-align: center;
+    padding: 0.4rem 0.75rem;
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.12) 0%, rgba(251, 191, 36, 0.04) 100%);
+    border: 1px solid rgba(251, 191, 36, 0.2);
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--warning-color);
+    letter-spacing: 0.3px;
+}
+
+.swim-tag {
+    font-size: 0.65rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 6px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.swim-good {
+    background: rgba(74, 222, 128, 0.15);
+    color: var(--success-color);
+}
+
+.swim-caution {
+    background: rgba(251, 191, 36, 0.15);
+    color: var(--warning-color);
+}
+
+.swim-poor {
+    background: rgba(248, 113, 113, 0.15);
+    color: var(--danger-color);
 }
 
 .metric-value {
@@ -474,47 +881,90 @@ body {
     grid-column: span 1;
 }
 
-.rainfall-content {
-    display: flex;
-    flex-direction: column;
+.rainfall-premium-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 1.25rem;
     align-items: center;
-    gap: 0.35rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
+    padding: 0.5rem 0;
 }
 
-.rain-main {
-    display: flex;
-    align-items: baseline;
-    justify-content: center;
-    font-size: 2.5rem;
-    font-weight: 700;
-    font-family: var(--font-mono);
+.rainfall-main-stat {
+    text-align: center;
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    padding-right: 1.25rem;
 }
 
-.rain-main .unit {
+.rainfall-main-stat .stat-value {
+    font-size: 3.25rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    letter-spacing: -2px;
+}
+
+.rainfall-main-stat .unit {
     font-size: 1.25rem;
-    color: var(--text-secondary);
-    margin-left: 4px;
+    color: var(--text-muted);
+    margin-left: 2px;
+    font-weight: 500;
+    letter-spacing: 0;
 }
 
 .rain-status {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--success-color);
-    padding: 0.2rem 0.8rem;
+    display: inline-block;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0.35rem 0.85rem;
     background: rgba(74, 222, 128, 0.1);
+    color: var(--success-color);
     border-radius: 8px;
 }
 
-.rain-forecast {
-    font-size: 0.85rem;
+.rainfall-details-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.rain-detail {
+    display: flex;
+    flex-direction: column;
+}
+
+.rain-detail .label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
     color: var(--text-muted);
-    margin-top: 0.25rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.15rem;
+}
+
+.rain-detail .value {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.rain-forecast-banner {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0.5rem;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    margin-bottom: 1.25rem;
 }
 
 /* Charts */
-.chart-container-small {
-    height: 80px;
+.chart-container-rain {
+    height: 100px;
     width: 100%;
 }
 
@@ -749,8 +1199,11 @@ footer a:hover {
         grid-column: 1 / -1;
     }
 
-    /* Sea and Rainfall cards side by side */
-    .sea-card,
+    /* Sea card spans full width, rainfall stays in grid */
+    .sea-card {
+        grid-column: 1 / -1;
+    }
+
     .rainfall-card {
         grid-column: span 1;
     }
@@ -802,13 +1255,25 @@ footer a:hover {
         grid-column: span 1;
     }
 
-    /* Fix Sea Card Layout */
-    .sea-grid {
-        flex-wrap: wrap;
+    /* Sea layout stacks on mobile */
+    .sea-layout {
+        flex-direction: column;
+        gap: 1rem;
     }
 
-    .sea-metric {
-        min-width: 140px;
+    .sea-metrics-col {
+        flex-direction: row;
+        min-width: unset;
+    }
+
+    .wind-compass-container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .compass-ring {
+        width: 130px;
+        height: 130px;
     }
 
     .tide-summary {
@@ -964,15 +1429,56 @@ footer a:hover {
     }
 
     /* Fix Sea Conditions Card - MUST stack vertically on mobile */
-    .sea-grid {
+    .sea-layout {
         flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .sea-metrics-col {
+        flex-direction: row;
         gap: 0.5rem;
     }
 
     .sea-metric {
-        padding: 0.85rem;
+        padding: 0.75rem;
         min-width: unset;
         width: 100%;
+    }
+
+    .wind-compass-container {
+        flex-direction: column;
+        padding: 1rem;
+        gap: 0.75rem;
+    }
+
+    .compass-ring {
+        width: 110px;
+        height: 110px;
+    }
+
+    .compass-needle {
+        height: 80px;
+    }
+
+    .needle-north {
+        border-bottom-width: 36px;
+    }
+
+    .needle-south {
+        border-top-width: 36px;
+    }
+
+    .compass-center {
+        width: 40px;
+        height: 40px;
+    }
+
+    .compass-speed {
+        font-size: 0.7rem;
+    }
+
+    .wind-detail-row {
+        padding: 0.4rem 0.6rem;
     }
 
     .metric-value {

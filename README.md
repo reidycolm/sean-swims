@@ -64,6 +64,6 @@ This project is open source and available for personal use.
 
 ---
 
-*Created with ❤️ for Sean & Radar 🐾*
+*Built for Sean & Radar 🐾*
 
 *Stay safe and enjoy the waters of Tarbert!*
