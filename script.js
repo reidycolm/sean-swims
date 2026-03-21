@@ -987,7 +987,10 @@ function renderTideChart(now, todayTides, nextHigh, nextLow) {
 
     if (window.tideChartInstance) window.tideChartInstance.destroy();
 
-    const ctx = els.tideChartCtx.getContext('2d');
+    const ctx = els.tideChartCtx;
+    if (!ctx) return;
+
+    // Create height-dependent gradient
     const gradient = ctx.createLinearGradient(0, 0, 0, 140);
     gradient.addColorStop(0, 'rgba(56, 189, 248, 0.5)');
     gradient.addColorStop(1, 'rgba(56, 189, 248, 0)');
@@ -1004,7 +1007,7 @@ function renderTideChart(now, todayTides, nextHigh, nextLow) {
         }
     });
 
-    window.tideChartInstance = new Chart(els.tideChartCtx, {
+    window.tideChartInstance = new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels,
