@@ -1,6 +1,6 @@
 # Sean & Radar's Swim Club Dashboard 🌊🐶
 
-A beautiful, real-time coastal dashboard for **Tarbert, Co. Kerry**, designed for open water swimmers who want accurate tide times, weather conditions, and sea temperature data.
+Dashboard for **Tarbert, Co. Kerry**, designed for open water swimmers who want accurate tide times, weather conditions, and sea temperature data.
 
 ![Tarbert Coastal Dashboard](logo_v2.png)
 
