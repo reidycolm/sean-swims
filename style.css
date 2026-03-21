@@ -1003,6 +1003,26 @@ body {
 .chart-container-wide {
     height: 140px;
     width: 100%;
+    margin-top: 1rem;
+    position: relative;
+}
+
+.chart-container-wide canvas {
+    animation: waveGlow 5s ease-in-out infinite;
+}
+
+@keyframes waveGlow {
+
+    0%,
+    100% {
+        filter: drop-shadow(0 0 2px rgba(56, 189, 248, 0.1));
+        opacity: 0.95;
+    }
+
+    50% {
+        filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.3));
+        opacity: 1;
+    }
 }
 
 /* Forecast */

@@ -558,6 +558,9 @@ const TIDE_TABLE_APR_2026 = {
     ]
 };
 
+// Global state for sharing data between cards
+let lastWeatherData = null;
+
 // DOM Elements
 const els = {
     temp: document.getElementById('current-temp'),
@@ -709,6 +712,7 @@ async function fetchWeather() {
         const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,weather_code,precipitation,wind_speed_10m,wind_direction_10m,wind_gusts_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset&hourly=precipitation,precipitation_probability,temperature_2m&timezone=Europe%2FDublin&past_days=1&forecast_days=7`;
         const res = await fetch(url);
         const data = await res.json();
+        lastWeatherData = data;
         renderWeather(data);
         renderForecast(data);
     } catch (e) {
@@ -953,6 +957,7 @@ function renderTideChart(now, todayTides, nextHigh, nextLow) {
     // Generate a 24-hour tide curve simulation
     const labels = [];
     const levels = [];
+    const fullDateLabels = [];
 
     // Get tides for today and tomorrow for the chart
     const tomorrow = new Date(now);
@@ -969,17 +974,16 @@ function renderTideChart(now, todayTides, nextHigh, nextLow) {
         const date = timeStringToDate(t.time, tomorrow);
         allEvents.push({ ...t, date });
     });
-
-    // Sort by time
     allEvents.sort((a, b) => a.date - b.date);
 
-    // Generate 32 points for a smoother curve (24 hours + overlap)
+    // Generate 25 points for smooth curve
     const startTime = new Date(now);
     startTime.setMinutes(0, 0, 0);
 
     for (let i = 0; i < 25; i++) {
         const pointTime = new Date(startTime.getTime() + i * 60 * 60 * 1000);
         labels.push(formatTimeFromDate(pointTime));
+        fullDateLabels.push(pointTime);
         const level = interpolateTideLevel(pointTime, allEvents);
         levels.push(level);
     }
@@ -1002,6 +1006,70 @@ function renderTideChart(now, todayTides, nextHigh, nextLow) {
             }
         });
 
+        // Day/Night shading plugin
+        const dayNightPlugin = {
+            id: 'dayNightShading',
+            beforeDraw: (chart) => {
+                if (!lastWeatherData) return;
+                const { ctx, chartArea, scales: { x, y } } = chart;
+                const daily = lastWeatherData.daily;
+
+                // Get sunrise/sunset times for relevant days
+                const sunEvents = [];
+                for (let i = 1; i <= 2; i++) { // Today and Tomorrow
+                    if (daily.sunrise[i]) sunEvents.push({ time: new Date(daily.sunrise[i]), type: 'sunrise' });
+                    if (daily.sunset[i]) sunEvents.push({ time: new Date(daily.sunset[i]), type: 'sunset' });
+                }
+
+                sunEvents.sort((a, b) => a.time - b.time);
+
+                ctx.save();
+                // Draw night shading between sunset and sunrise
+                // Simplified: Start with background if first event is sunrise
+                let currentIsNight = startTime < sunEvents[0]?.time && startTime.getHours() > 18 || startTime.getHours() < 6;
+                let lastX = chartArea.left;
+
+                // Create a range for each hour point to check day/night
+                fullDateLabels.forEach((time, index) => {
+                    const nextTime = fullDateLabels[index + 1] || new Date(time.getTime() + 60 * 60 * 1000);
+                    const isNight = isTimeNight(time, sunEvents);
+
+                    if (isNight) {
+                        const xStart = x.getPixelForValue(labels[index]);
+                        const xEnd = x.getPixelForValue(labels[index + 1] || labels[index]);
+
+                        ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+                        ctx.fillRect(xStart, chartArea.top, xEnd - xStart, chartArea.bottom - chartArea.top);
+                    }
+                });
+                ctx.restore();
+            }
+        };
+
+        // Vertical line plugin
+        const verticalLinePlugin = {
+            id: 'verticalLine',
+            afterDraw: (chart) => {
+                if (chart.tooltip?._active?.length) {
+                    const activePoint = chart.tooltip._active[0];
+                    const { ctx } = chart;
+                    const x = activePoint.element.x;
+                    const topY = chart.chartArea.top;
+                    const bottomY = chart.chartArea.bottom;
+
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.moveTo(x, topY);
+                    ctx.lineTo(x, bottomY);
+                    ctx.lineWidth = 1;
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+                    ctx.setLineDash([5, 5]);
+                    ctx.stroke();
+                    ctx.restore();
+                }
+            }
+        };
+
         window.tideChartInstance = new Chart(ctx, {
             type: 'line',
             data: {
@@ -1015,28 +1083,34 @@ function renderTideChart(now, todayTides, nextHigh, nextLow) {
                         pointBorderColor: '#38bdf8',
                         pointBorderWidth: 4,
                         showLine: false,
-                        zIndex: 10
+                        zIndex: 20
                     },
                     {
                         label: 'Peaks',
                         data: peakMarkers,
-                        pointRadius: 4,
+                        pointRadius: 5,
                         pointBackgroundColor: (context) => {
                             const index = context.dataIndex;
                             const label = labels[index];
-                            const event = allEvents.find(e => formatTimeFromDate(e.date) === label);
-                            return event && event.type === 'High' ? '#38bdf8' : '#f87171';
+                            const time = fullDateLabels[index];
+                            const event = allEvents.find(e => {
+                                const eTime = formatTimeFromDate(e.date);
+                                // Robust match: same hour or very close
+                                return eTime === label || Math.abs(e.date - time) < 30 * 60 * 1000;
+                            });
+                            return event && event.type === 'High' ? '#4ade80' : '#f87171';
                         },
-                        pointBorderColor: 'rgba(255,255,255,0.2)',
-                        pointBorderWidth: 2,
-                        showLine: false
+                        pointBorderColor: '#000',
+                        pointBorderWidth: 1,
+                        showLine: false,
+                        zIndex: 15
                     },
                     {
                         label: 'Level (m)',
                         data: levels,
                         borderColor: '#38bdf8',
                         backgroundColor: gradient,
-                        borderWidth: 2.5,
+                        borderWidth: 3,
                         fill: true,
                         tension: 0.4,
                         pointRadius: 0
@@ -1046,22 +1120,23 @@ function renderTideChart(now, todayTides, nextHigh, nextLow) {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
                 animation: { duration: 1500, easing: 'easeInOutQuart' },
                 plugins: {
                     legend: false,
                     tooltip: {
-                        backgroundColor: 'rgba(15, 23, 42, 0.9)',
-                        padding: 10,
+                        backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                        padding: 12,
                         displayColors: false,
                         callbacks: {
-                            label: (context) => `${context.parsed.y.toFixed(2)}m`
+                            label: (context) => `Depth: ${context.parsed.y.toFixed(2)}m`
                         }
                     }
                 },
                 scales: {
                     x: {
                         grid: { display: false },
-                        ticks: { color: '#64748b', font: { size: 10 }, maxTicksLimit: 6 }
+                        ticks: { color: '#94a3b8', font: { size: 10 }, maxTicksLimit: 6 }
                     },
                     y: {
                         display: false,
@@ -1069,11 +1144,29 @@ function renderTideChart(now, todayTides, nextHigh, nextLow) {
                         max: 6
                     }
                 }
-            }
+            },
+            plugins: [dayNightPlugin, verticalLinePlugin]
         });
     } catch (err) {
         console.error("Tide Chart error:", err);
     }
+}
+
+// Helper to determine if a time is night based on sun events
+function isTimeNight(time, sunEvents) {
+    if (!sunEvents || sunEvents.length === 0) return time.getHours() > 19 || time.getHours() < 7;
+
+    // Find where the time fits in sun events
+    let prev = null;
+    let next = null;
+
+    for (const event of sunEvents) {
+        if (event.time <= time) prev = event;
+        else { next = event; break; }
+    }
+
+    if (!prev) return sunEvents[0].type === 'sunrise'; // If before first sunrise, it's night
+    return prev.type === 'sunset'; // If last event was sunset, it's night
 }
 
 // Interpolate tide level between known points using sine wave approximation
