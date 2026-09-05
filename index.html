@@ -29,7 +29,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Tarbert Swim">
     <link rel="apple-touch-icon" href="icons/icon-192.png">
-    <link rel="stylesheet" href="style.css?v=13">
+    <link rel="stylesheet" href="style.css?v=17">
 </head>
 
 <body>
@@ -81,6 +81,7 @@
                     <i id="weather-icon" data-feather="cloud" class="large-icon"></i>
                     <span id="weather-desc">Loading...</span>
                 </div>
+                <div class="tide-state" id="tide-state"></div>
                 <div class="sun-cycle">
                     <div class="sun-item">
                         <i data-feather="sunrise"></i>
@@ -107,7 +108,7 @@
                     <h3><i data-feather="activity"></i> Tides</h3>
                     <div class="header-tags">
                         <span class="tag source-tag" id="tide-source">Tarbert Island</span>
-                        <span class="tag">Next 24h</span>
+                        <span class="tag">24h curve</span>
                     </div>
                 </div>
                 <div class="moon-phase-bar">
@@ -120,28 +121,36 @@
                     <div class="tide-item high">
                         <i data-feather="arrow-up" class="tide-icon"></i>
                         <div class="tide-info">
-                            <span class="label">Next High</span>
+                            <span class="tide-order">Next tide</span>
+                            <span class="label">High tide</span>
                             <span class="time" id="next-high-tide">--:--</span>
                             <span class="tide-height" id="next-high-height"></span>
                             <span class="tide-context" id="high-tide-context"></span>
+                            <span class="tide-countdown" id="high-tide-countdown"></span>
                         </div>
                     </div>
                     <div class="tide-item low">
                         <i data-feather="arrow-down" class="tide-icon"></i>
                         <div class="tide-info">
-                            <span class="label">Next Low</span>
+                            <span class="tide-order">Following tide</span>
+                            <span class="label">Low tide</span>
                             <span class="time" id="next-low-tide">--:--</span>
                             <span class="tide-height" id="next-low-height"></span>
                             <span class="tide-context" id="low-tide-context"></span>
+                            <span class="tide-countdown" id="low-tide-countdown"></span>
                         </div>
                     </div>
                 </div>
 
-                <div class="tide-state" id="tide-state"></div>
+                <div class="today-tide-sequence">
+                    <h4>Today's tides <span>&middot; Irish local time</span></h4>
+                    <div id="today-tides" class="tide-times"></div>
+                </div>
 
                 <div class="chart-container-wide">
-                    <canvas id="tideChart"></canvas>
+                    <canvas id="tideChart" role="img" aria-label="Visual tide interpolation with exact official high and low tide points. Times and heights are listed in today's tides and the weekly schedule."></canvas>
                 </div>
+                <p id="tide-chart-note" class="tide-chart-note"></p>
             </div>
 
             <!-- Sea Conditions Card -->
@@ -187,6 +196,7 @@
                                     <span class="compass-speed-unit">km/h</span>
                                 </div>
                             </div>
+                            <div class="wind-speed-caption">Wind speed</div>
                         </div>
                         <div class="wind-details">
                             <div class="wind-detail-row">
@@ -212,23 +222,26 @@
                 </div>
                 <div class="rainfall-premium-grid">
                     <div class="rainfall-main-stat">
+                        <div class="rain-metric-label">Current rain</div>
                         <div class="stat-value"><span id="current-rain">--</span><span class="unit">mm</span></div>
                         <div id="rain-status" class="rain-status">--</div>
                     </div>
                     <div class="rainfall-details-col">
                         <div class="rain-detail">
-                            <span class="label">Chance</span>
+                            <span class="label">Rain chance</span>
                             <span class="value" id="rain-prob">--%</span>
                         </div>
                         <div class="rain-detail">
-                            <span class="label">24h Total</span>
+                            <span class="label">Next 24h total</span>
                             <span class="value"><span id="rain-total">--</span><small>mm</small></span>
                         </div>
                     </div>
                 </div>
-                <div id="next-hour-rain" class="rain-forecast-banner">Next Hour: --</div>
-                <div class="chart-container-rain">
-                    <canvas id="rainfallChart"></canvas>
+                <div class="rain-hourly-block">
+                    <div id="next-hour-rain" class="rain-forecast-banner">Next Hour: --</div>
+                    <div class="chart-container-rain">
+                        <canvas id="rainfallChart"></canvas>
+                    </div>
                 </div>
             </div>
 
@@ -267,12 +280,15 @@
         </footer>
     </div>
 
-    <script src="script.js?v=9"></script>
+    <script src="data/tides-2026.js?v=1"></script>
+    <script src="tides.js?v=1"></script>
+    <script src="tide-ui.js?v=3"></script>
+    <script src="script.js?v=11"></script>
     <script>
-        feather.replace();
+        if (typeof feather !== 'undefined') feather.replace();
         // Register Service Worker for PWA - forced update check
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js?v=2').then((reg) => {
+        if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+            navigator.serviceWorker.register('./sw.js?v=6').then((reg) => {
                 reg.update();
                 console.log('Service Worker registered and forced update checked');
             }).catch(err => console.log('SW registration failed:', err));
