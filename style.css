@@ -490,11 +490,13 @@ body {
 
 .tide-state {
     text-align: center;
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    padding: 0.35rem 0.75rem;
-    margin-bottom: 0.75rem;
-    letter-spacing: 0.5px;
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    padding: 0 0.5rem;
+    margin-top: 0.4rem;
+    text-wrap: balance;
 }
 
 .tide-state .state-icon {
@@ -1548,4 +1550,104 @@ footer a:hover {
     .chart-container-wide {
         height: 125px;
     }
+}
+/* Tide readability refinements: retain the existing marine palette and cards. */
+[hidden] { display: none !important; }
+.card { min-width: 0; }
+.chart-container-wide canvas, .chart-container-rain canvas { max-width: 100%; }
+.tide-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-bottom: 0.75rem; }
+.tide-info { min-width: 0; gap: 0.15rem; }
+.tide-info .time { font-size: clamp(1.15rem, 3vw, 1.75rem); overflow-wrap: anywhere; }
+.tide-height { font-size: 0.95rem; color: var(--text-primary); }
+.tide-context { color: var(--text-muted); font-size: 0.75rem; }
+.tide-countdown { color: var(--accent-color); font-size: 0.8rem; line-height: 1.5; }
+.today-tide-sequence { padding: 0.85rem 0; border-top: 1px solid var(--card-border); }
+.today-tide-sequence h4 { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: baseline; margin: 0 0 0.7rem; font-size: 0.85rem; font-weight: 600; }
+.today-tide-sequence h4 span { font-size: 0.7rem; font-weight: 400; color: var(--text-muted); }
+.today-tide-sequence .tide-times { justify-content: flex-start; }
+.tide-pill { display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.5rem 0.65rem; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.tide-event-type { font-family: var(--font-family); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.04em; }
+.tide-event-height { color: var(--text-secondary, #cbd5e1); font-size: 0.7rem; font-weight: 400; }
+.tide-past { opacity: 0.65; }
+.tide-chart-note { color: var(--text-muted); font-size: 0.65rem; line-height: 1.5; margin: 0.5rem 0 0; }
+.tide-unavailable { color: var(--text-muted); font-size: 0.8rem; line-height: 1.5; }
+.weekly-tides-container { max-height: none; overflow: visible; padding-right: 0; }
+.weekly-tides-container .tide-row { gap: 1rem; }
+.weekly-tides-container .tide-date { min-width: 115px; }
+.tides-card .chart-container-wide { height: 180px; }
+@media (max-width: 700px) {
+    .wind-detail-row { gap: 0.65rem; }
+    .tide-summary { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+    .tide-item { padding: 0.85rem; gap: 0.6rem; align-items: flex-start; }
+    .tide-icon { flex-shrink: 0; }
+    .weekly-tides-container .tide-row { flex-direction: column; align-items: flex-start; gap: 0.6rem; }
+    .weekly-tides-container .tide-times { justify-content: flex-start; }
+}
+@media (max-width: 480px) {
+    .tide-item > .tide-icon { display: none; }
+    .tide-item { padding: 0.75rem; }
+    .tide-summary { gap: 0.5rem; }
+    .today-tide-sequence .tide-times, .weekly-tides-container .tide-times { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; gap: 0.4rem; }
+    .tide-pill { flex-wrap: wrap; gap: 0.3rem; padding: 0.45rem; }
+    .tide-event-height { flex-basis: 100%; }
+    .tide-countdown { font-size: 0.72rem; }
+    .moon-phase-bar { flex-wrap: wrap; }
+    .tides-card .header-tags { flex-wrap: wrap; justify-content: flex-end; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .card, .tide-row { transition: none; }
+}
+
+@media (min-width: 1025px) {
+    .navbar { margin-bottom: 1.25rem; }
+    .hero { margin-bottom: 2.25rem; }
+    .hero-temp-grid { margin-bottom: 1.5rem; }
+}
+
+/* A compact, matched pair of current sea and rainfall conditions. */
+.sea-card, .rainfall-card { display: flex; flex-direction: column; }
+.sea-card .card-header, .rainfall-card .card-header { margin-bottom: 1rem; }
+.sea-card .sea-layout { flex: 1; flex-direction: column; gap: 0.85rem; }
+.sea-card .sea-metrics-col { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; min-width: 0; }
+.sea-card .sea-metric { min-width: 0; padding: 0.85rem 0.65rem; }
+.sea-card .metric-value { font-size: 1.85rem; }
+.sea-card .metric-label { font-size: 0.68rem; }
+.sea-card .wind-compass-container { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 1rem; padding: 0.85rem 1rem; align-items: center; flex: 1; }
+.sea-card .compass { display: flex; flex-direction: column; align-items: center; gap: 0.35rem; }
+.sea-card .compass-ring { width: 112px; height: 112px; border-color: rgba(56, 189, 248, 0.4); box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.035), inset 0 0 18px rgba(56, 189, 248, 0.06); }
+.sea-card .compass-needle { height: 72px; transition: transform 0.5s ease-out; }
+.sea-card .needle-north { border-bottom-width: 32px; }
+.sea-card .needle-south { border-top-width: 32px; }
+.sea-card .compass-center { width: 44px; height: 44px; }
+.sea-card .compass-speed { font-size: 1rem; }
+.sea-card .wind-speed-caption { color: var(--text-secondary); font-size: 0.65rem; }
+.sea-card .wind-details { min-width: 0; gap: 0.35rem; }
+.sea-card .wind-detail-row { gap: 0.5rem; padding: 0.2rem 0; border: 0; background: none; }
+.sea-card .wind-detail-label { font-size: 0.68rem; }
+.sea-card .wind-detail-value { font-size: 0.95rem; }
+.sea-card .wind-beaufort { margin-top: 0.2rem; padding: 0.3rem 0.5rem; font-size: 0.73rem; }
+.rainfall-card .rainfall-premium-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem; align-items: start; padding: 0.85rem 0; margin: 0 0 0.85rem; }
+.rainfall-card .rainfall-details-col { display: contents; }
+.rainfall-card .rainfall-main-stat { border: 0; padding: 0; text-align: left; min-width: 0; }
+.rainfall-card .rain-metric-label, .rainfall-card .rain-detail .label { min-height: 2.6em; margin-bottom: 0.35rem; color: var(--text-secondary); font-size: 0.68rem; line-height: 1.3; font-weight: 500; text-transform: uppercase; letter-spacing: 0.03em; }
+.rainfall-card .stat-value, .rainfall-card .rain-detail .value { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.15rem; font-family: var(--font-mono); font-size: 1.85rem; font-weight: 700; line-height: 1.2; letter-spacing: -0.04em; margin: 0; }
+.rainfall-card .stat-value .unit, .rainfall-card .rain-detail small { font-size: 0.8rem; color: var(--text-secondary); font-weight: 400; letter-spacing: 0; }
+.rainfall-card .rain-status { padding: 0.15rem 0.4rem; margin-top: 0.35rem; background: rgba(74, 222, 128, 0.06); font-size: 0.68rem; font-weight: 500; text-transform: none; letter-spacing: 0; }
+.rainfall-card .rain-hourly-block { flex: 1; display: flex; flex-direction: column; border-top: 1px solid var(--card-border); padding-top: 0.75rem; }
+.rainfall-card .rain-forecast-banner { background: none; border: 0; border-radius: 0; padding: 0; margin: 0 0 0.6rem; text-align: left; font-size: 0.75rem; font-weight: 400; }
+.rainfall-card .chart-container-rain { position: relative; flex: 1; min-height: 120px; }
+@media (max-width: 480px) {
+    .sea-card .sea-metrics-col { gap: 0.5rem; }
+    .sea-card .metric-value { font-size: 1.6rem; }
+    .sea-card .wind-compass-container { grid-template-columns: 100px minmax(0, 1fr); gap: 0.7rem; padding: 0.75rem; }
+    .sea-card .compass-ring { width: 100px; height: 100px; }
+    .rainfall-card .rainfall-premium-grid { gap: 0.5rem; }
+    .rainfall-card .stat-value, .rainfall-card .rain-detail .value { font-size: 1.5rem; }
+}
+
+.tide-order { color: var(--text-secondary); font-size: 0.65rem; letter-spacing: 0.04em; text-transform: uppercase; }
+.tide-item.high .label { color: var(--accent-color); }
+.tide-item.low .label { color: var(--danger-color); }
+@media (prefers-reduced-motion: reduce) {
+    .sea-card .compass-needle { transition: none; }
 }
